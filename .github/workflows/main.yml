@@ -1,3 +1,26 @@
+name: Build IPA
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  core-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
       - run: cmake -S PS4Emu-iOS -B build-host -DCMAKE_BUILD_TYPE=Release
       - run: cmake --build build-host
       - run: ctest --test-dir build-host --output-on-failure
+
+  ipa:
+    needs: core-tests
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install xcodegen
+      - run: cd PS4Emu-iOS && bash Scripts/build_ipa.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PS4Emu-unsigned-ipa
+          path: PS4Emu-iOS/build/PS4Emu-unsigned.ipa
