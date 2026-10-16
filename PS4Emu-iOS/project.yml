@@ -1,0 +1,39 @@
+# XcodeGen: gera PS4Emu.xcodeproj automaticamente (não precisas de editar o projeto à mão).
+name: PS4Emu
+options:
+  bundleIdPrefix: dev.ps4emu
+  deploymentTarget:
+    iOS: "16.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    CLANG_CXX_LANGUAGE_STANDARD: "c++20"
+    CLANG_CXX_LIBRARY: "libc++"
+    TARGETED_DEVICE_FAMILY: "2"          # só iPad
+    SWIFT_OBJC_BRIDGING_HEADER: App/PS4Emu-Bridging-Header.h
+    HEADER_SEARCH_PATHS: "$(SRCROOT)/Core"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+targets:
+  PS4Emu:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+        excludes:
+          - Info.plist
+      - path: Core
+        excludes:
+          - "**/README.md"
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: PS4Emu
+        UILaunchScreen: {}
+        UIFileSharingEnabled: true               # pasta do app visível na app Ficheiros
+        LSSupportsOpeningDocumentsInPlace: true
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
